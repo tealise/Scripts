@@ -2,7 +2,7 @@
 ==================================
 --- RDP Checker Tool
 ==================================
-  Author:  Joshua Nasiatka - joshuanasiatka@gmail.com
+  Author:  Joshua Nasiatka
   Date:    Mar 2017
   Version: 1.0.0
 ==================================
