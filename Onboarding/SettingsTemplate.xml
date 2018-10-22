@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Exchange>
+    <ServerName></ServerName>
+    <SMTPPort></SMTPPort>
+  </Exchange>
+  <Domain>
+    <FQDN></FQDN>
+    <PreferredDC></PreferredDC>
+  </Domain>
+  <Other>
+    <DistributionGroupOU></DistributionGroupOU>
+    <SharedMailboxOU></SharedMailboxOU>
+  </Other>
+</Settings>

@@ -1,0 +1,2 @@
+Role,Department,Description,Location,Manager,AdditionalGroups,Template,OU
+Staff Accountant,Accounting,Staff Accountant,HQ,jsmith1,"ADGroupName1,ADGroupName2","CN=*Staff Accountant Template,OU=Onboarding,OU=Staging,OU=IT,DC=domain,DC=com","OU=Accounting,OU=HQ,OU=Locations,DC=domain,DC=com"

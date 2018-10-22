@@ -9,7 +9,7 @@
 
 .NOTES
     File Name      : winCrypt.ps1
-    Author         : Joshua Nasiatka (bitcraftlabs.net)
+    Author         : Joshua Nasiatka (joshuanasiatka.com)
     Prerequisite   : PowerShell V2 over Vista and upper
     Version History: 5/7/2015 (original release)
     Current Version: 2/5/2016 (not branded for my job edition)

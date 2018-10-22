@@ -1,14 +1,9 @@
-# Windows Sysadmin Tools
-Windows Sysadmin Tools - Scripts and Otherwise
+# Miscellaneous Scripts & Tools
 
-### AD Tools
-[Bitlocker Recovery GUI](bitlocker-recovery/) -- PowerShell
+<a href="https://www.buymeacoffee.com/joshuan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/black_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 
-### Automated Activations
-[Office 2013](automated-activations/activateOffice13.bat) -- Batch
+> If you get some use out of these scripts and have some spare change, please keep me caffeinated and buy me a coffee. It would be much appreciated.
 
-### Customization Tools
-[Company Info in System Information](customize/) -- Registry Mod
+This is a compilation of scripts (PowerShell, batch, python, etc.) that I've written to automate different tasks and pull reports.
 
-### Server Tools
-[RDPChecker](rdp-checker/) -- PowerShell
+***NOTE: These scripts are not necessarily fully completed and are always under development. The contents of this repository are provided as is without warranty, use at your own risk.***

@@ -1,0 +1,12 @@
+# Windows generated files
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS generated files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
