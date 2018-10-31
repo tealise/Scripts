@@ -63,7 +63,7 @@ process {
 		Write-Warning $NopeError
 		return
 	} else {
-		Write-Host "Found a record for user '$User'"
+		Write-Output "Found a record for user '$User'"
 	}
 
 	# Try and establish connection to Exchange server
@@ -81,7 +81,7 @@ process {
 		return
 	}
 
-	Write-Host "Processing Exchange account for user, $User ($Alias)"
+	Write-Output "Processing Exchange account for user, $User ($Alias)"
 
 	$out = `
 	Invoke-Command -Session $Session -ScriptBlock {
@@ -102,7 +102,7 @@ process {
 	# Close out the Exchange PSSession
 	Remove-PSSession $Session
 	Write-Output "Exited Exchange Session"
-	Write-Host "Completed Task"
-	Write-Host "======================================="
+	Write-Output "Completed Task"
+	Write-Output "======================================="
 
 }

@@ -15,7 +15,7 @@ Param (
 
 ############# VERIFY EXISTENCE OF CSV #########
 If (!(Test-Path -Path $InputFile)) { Write-Error "You Dun Goofed! (No Valid Path)"; exit }
-Else { Write-Host "File Exists!" }
+Else { Write-Output "File Exists!" }
 
 ############# OBTAIN CREDENTIALS ##############
 # Get AD Credential w/ permission to access Active Directory (e.g. Domain Admin account)
@@ -34,16 +34,16 @@ if ($domain.name -eq $null) {
     Write-Warning "Authentication failed - please verify your username and password."
     exit
 } else {
-    Write-Host "Successfully authenticated with domain $domain.name"
+    Write-Output "Successfully authenticated with domain $domain.name"
 }
 
 ############# PRIVATE FUNCTIONS ###############
 function Verify-ADModule {
   # Search list of available modules for the AD module
   if (!(Get-Module -ListAvailable -Name ActiveDirectory)) {
-      Write-Host "ERROR!!" -foregroundcolor "magenta"
-      Write-Host "Active Directory CMDLET Not Installed:"
-      Write-Host "Please install RSAT and enable Active Directory Powershell Module"
+      Write-Output "ERROR!!" -foregroundcolor "magenta"
+      Write-Output "Active Directory CMDLET Not Installed:"
+      Write-Output "Please install RSAT and enable Active Directory Powershell Module"
       return $false
   } else {
       Import-Module ActiveDirectory
@@ -76,4 +76,4 @@ $users | Foreach-Object {
   }
 }
 
-Write-Host "Department Update for All Users in AD is Completed`nRe-run .\Get-ADUser-List.ps1 or .\Get-ADUser-List-Wasp.ps1 to check."
+Write-Output "Department Update for All Users in AD is Completed`nRe-run .\Get-ADUser-List.ps1 or .\Get-ADUser-List-Wasp.ps1 to check."

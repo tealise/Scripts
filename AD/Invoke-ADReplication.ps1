@@ -14,17 +14,17 @@ if ( (Get-PSSnapin -Name Quest.ActiveRoles.ADManagement -ErrorAction silentlycon
     if ( (Get-PSSnapin -Name Quest.ActiveRoles.ADManagement -Registered -ErrorAction SilentlyContinue) -eq $null) {
       Write-Error "You must install Quest ActiveRoles AD Tools to use this script!"
     } else {
-      Write-Host "Importing QAD Tools"
+      Write-Output "Importing QAD Tools"
       Add-PSSnapin -Name Quest.ActiveRoles.ADManagement -ErrorAction Stop
     }
 }
 
-Write-Host "Starting replication on ADDS"
+Write-Output "Starting replication on ADDS"
 # Find each domain controller, then do a foreach-object
 Get-QADComputer -ComputerRole 'DomainController' | % {
-    Write-Host "Replicating $($_.Name)"
+    Write-Output "Replicating $($_.Name)"
     (repadmin /kcc $_.Name) | Out-null
     (repadmin /syncall /A /e $_.Name) | out-null
 }
 
-Write-Host "Completed ADDS Replication"
+Write-Output "Completed ADDS Replication"

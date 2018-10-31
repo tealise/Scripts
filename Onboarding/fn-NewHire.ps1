@@ -14,21 +14,21 @@ function Elevate {
       Write-Warning "Authentication failed - please verify your username and password."
       Elevate
   } else {
-      Write-Host "Successfully authenticated with domain" ($domain).name
+      Write-Output "Successfully authenticated with domain" ($domain).name
   }
   return $cred
 }
 
 function LocationPicker($locations) {
   Clear-Host
-  Write-Host @"
+  Write-Output @"
 ############################################################
 #                    LOCATION PICKER                       #
 ############################################################
 "@
   [int]$i=1
   foreach ($location in $locations) {
-    Write-Host "[$i]" $location.Name "`t" $Address
+    Write-Output "[$i]" $location.Name "`t" $Address
     $i++
   }
   $loc = Read-Host "Please select a location"
@@ -44,14 +44,14 @@ function RolePicker($roles) {
   if ($departments.Count -le 1) {$departments = @($departments)}
 
   Clear-Host
-  Write-Host @"
+  Write-Output @"
 ############################################################
 #                  DEPARTMENT PICKER                       #
 ############################################################
 "@
   [int]$i=1
   foreach ($department in $departments) {
-    Write-Host "[$i]" $department
+    Write-Output "[$i]" $department
     $i++
   }
   $dept = Read-Host "`r`nPlease select a department"
@@ -61,14 +61,14 @@ function RolePicker($roles) {
   $location_options = (($role_list | ?{$_.Department -eq $dept_name}) | Sort Location -uniq) | ?{$_.Location -ne ""}
 
   Clear-Host
-  Write-Host @"
+  Write-Output @"
 ############################################################
 #                     LOCATION PICKER                      #
 ############################################################
 "@
   [int]$i=1
   foreach ($location_option in $location_options) {
-    Write-Host "[$i]" $location_option.Location
+    Write-Output "[$i]" $location_option.Location
     $i++
   }
   $loc = Read-Host "`r`nPlease select a location"
@@ -78,20 +78,20 @@ function RolePicker($roles) {
   $filtered_roles = $role_list | ?{ ($_.Location -eq $loc_name)}
 
   Clear-Host
-  Write-Host @"
+  Write-Output @"
 ############################################################
 #                       ROLE PICKER                        #
 ############################################################
 "@
   [int]$j=1
   foreach ($role_option in $filtered_roles) {
-    Write-Host "[$j]" $role_option.Role
+    Write-Output "[$j]" $role_option.Role
     $j++
   }
   $role = Read-Host "`r`nPlease select a role"
   $role_name = $filtered_roles[$role-1]
 
-  Write-Host $role
+  Write-Output $role
   return $role_name
 }
 
@@ -118,7 +118,7 @@ function GetUserName {
   if (-not $username) {return $default} else {
     $does_it_exist = Get-ADUser -Filter * | Where {$_.sAMAccountName -eq $username} | Select -First 1
     if ($does_it_exist) {
-      Write-Host "The supplied username '$username' already exists in AD."
+      Write-Output "The supplied username '$username' already exists in AD."
       GetUserName
     } else {
       return $username
@@ -139,7 +139,7 @@ function ValidateExtension {
 
 function ShowSummary {
   # Clear-Host
-  Write-Host @"
+  Write-Output @"
 ############################################################
 #              NEW HIRE ONBOARDING SUMMARY                 #
 ############################################################
@@ -165,9 +165,9 @@ The onboarding completed with the following warnings...`r`n
 WARNINGS:
 "@
 ListArray($warnings)
-Write-Host "`r`nERRORS:"
+Write-Output "`r`nERRORS:"
 ListArray($errors)
-Write-Host @"
+Write-Output @"
 ############################################################
 "@
 }
@@ -176,10 +176,10 @@ function ListArray($arr) {
   if (-not ([string]::IsNullOrEmpty($arr))) {
     foreach($item in $arr) {
       if (-not ([string]::IsNullOrEmpty($item))){
-        Write-Host " -" $item
+        Write-Output " -" $item
       }
     }
-  } else {Write-Host " - No items"}
+  } else {Write-Output " - No items"}
 }
 
 ############################################################
@@ -230,8 +230,8 @@ Function TestFolder ($udocs,$f) {
 }
 
 Function CreateUserDocs ($udocs, $f) {
-  Write-Host "Creating the folder $udocs\$f"
+  Write-Output "Creating the folder $udocs\$f"
   New-Item -ItemType Directory -Force -Path "$udocs\$f" | Out-Null
-  Write-Host "Setting the ACL"
+  Write-Output "Setting the ACL"
   TestFolder $udocs $f
 }

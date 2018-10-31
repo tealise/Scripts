@@ -28,7 +28,7 @@ if ($domain.name -eq $null) {
     Write-Warning "Authentication failed - please verify your username and password."
     exit
 } else {
-    Write-Host "Successfully authenticated with domain $domain.name"
+    Write-Output "Successfully authenticated with domain $domain.name"
 }
 
 # Generate array of print servers

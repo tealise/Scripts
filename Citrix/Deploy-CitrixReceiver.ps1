@@ -36,20 +36,20 @@ $installerFlags         = @(
 if (Test-Path $citrixPath) {
   $citrixInstalledVersion = $(Get-ChildItem $citrixRegKey | ForEach-Object { Get-ItemProperty $_.pspath }).Version
 } else {
-  Write-Host "Citrix not currently installed"
+  Write-Output "Citrix not currently installed"
   $skipUninstall = $true
 }
 
 if (Compare-Object $citrixPreferredVersion $citrixInstalledVersion) {
   # Copy over the installer and cleanup files
-  Write-Host "Copying installer files to $deployLocation"
+  Write-Output "Copying installer files to $deployLocation"
   if (!(Test-Path -Path $deployLocation)) { md $deployLocation }
   Copy-Item "$installerLocation\CitrixReceiver.exe" $deployLocation -Force
   Copy-Item "$installerLocation\ReceiverCleanupUtility.exe" $deployLocation -Force
 
   # If citrix is already installed but incorrect version, run the cleanup utility
   if (!($skipUninstall)) {
-    Write-Host "Cleaning up old receiver data..."
+    Write-Output "Cleaning up old receiver data..."
     Start-Process -FilePath "$deployLocation\ReceiverCleanupUtility.exe" -ArgumentList "/silent" -wait
   }
 
@@ -57,16 +57,16 @@ if (Compare-Object $citrixPreferredVersion $citrixInstalledVersion) {
   Stop-Process -Name msiexec.exe -Force -ErrorAction SilentlyContinue
 
   # Begin installation
-  Write-Host "Installing..."
+  Write-Output "Installing..."
   Start-Process $deployLocation\CitrixReceiver.exe -Wait -ArgumentList $installerFlags
 
   # Clean up Citrix temp files
-  Write-Host "Cleaning up..."
+  Write-Output "Cleaning up..."
   if (Test-Path -Path "%SYSTEMDRIVE%\Users\Default\AppData\Roaming\ICAClient") {
     Remove-Item -Recurse -Force "%SYSTEMDRIVE%\Users\Default\AppData\Roaming\ICAClient"
   }
 
 } else {
-  Write-Host "Citrix Receiver already at latest preferred version."
+  Write-Output "Citrix Receiver already at latest preferred version."
   exit
 }

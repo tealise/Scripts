@@ -75,7 +75,7 @@ process {
 				Write-Warning $NopeError
 				return $false
 			} else {
-				Write-Host "Found a record for mailbox '$Mailbox'"
+				Write-Output "Found a record for mailbox '$Mailbox'"
 				return $true
 			}
 		}
@@ -109,7 +109,7 @@ process {
 		exit
 	}
 
-	Write-Host "Connected to Microsoft Exchange"
+	Write-Output "Connected to Microsoft Exchange"
 
 	# This is the magic. Creates function to be passed into the Exchange PSSession
 	#		which will handle the mailbox permissions
@@ -147,13 +147,13 @@ process {
 
 			# Verifying mailbox exists before talking to Exchange
 			if (MailboxLookup($box)) {
-				Write-Host "Processing Exchange permissions for $users => ($MailboxName)"
+				Write-Output "Processing Exchange permissions for $users => ($MailboxName)"
 				$out = Invoke-Command -Session $Session -ScriptBlock ${function:ExchangeCommands} -ArgumentList $_.UserID,$box
 			}
 		}
 
 	} elseif ($User -And $MailboxAlias) {	# If during the script call, user and MailboxAlias were specified, process function
-		Write-Host "Command received, determining how to execute... Please hold."
+		Write-Output "Command received, determining how to execute... Please hold."
 
 		if ($MailboxAlias -like "*@*") {
 			$box = $MailboxAlias
@@ -163,18 +163,18 @@ process {
 
 		# Verifying mailbox exists before talking to Exchange
 		if (MailboxLookup($box)) {
-			Write-Host "Processing Exchange permissions for $User => ($MailboxAlias)"
+			Write-Output "Processing Exchange permissions for $User => ($MailboxAlias)"
 			$out = Invoke-Command -Session $Session -ScriptBlock ${function:ExchangeCommands} -ArgumentList $User,$box
 		}
 
 	} else { # If no parameters given for userid, MailboxAlias, or bulk, assume single person/mailbox and ask for details.
-		Write-Host "Guessing what you want from me"
+		Write-Output "Guessing what you want from me"
 		$User = Read-Host "Enter a UserID"
 		$MailboxAlias = Read-host "Enter a Mailbox Alias"
 
 		# Verifying mailbox exists before talking to Exchange
 		if (MailboxLookup($box)) {
-			Write-Host "Processing Exchange permissions for $User => ($MailboxAlias)"
+			Write-Output "Processing Exchange permissions for $User => ($MailboxAlias)"
 			$out = Invoke-Command -Session $Session -ScriptBlock ${function:ExchangeCommands} -ArgumentList $User,$box
 		}
 	}
@@ -182,7 +182,7 @@ process {
 	# Close out the Exchange PSSession
 	Remove-PSSession $Session
 	Write-Output "Exited Exchange Session"
-	Write-Host "Completed Task"
-	Write-Host "======================================="
+	Write-Output "Completed Task"
+	Write-Output "======================================="
 
 }

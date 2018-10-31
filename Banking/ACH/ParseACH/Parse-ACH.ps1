@@ -169,7 +169,7 @@ $file_count = $ach_files.count
 $index = 1
 $time_begin = (Get-Date).Millisecond
 Foreach ($file in $ach_files) {
-  Write-Host "Reading file [$index of $file_count]: $file"
+  Write-Output "Reading file [$index of $file_count]: $file"
   $records = SearchFilter $file $filter #record_type
   if (($records.ach_filtered).Count -ge 1) {
     if ($combine) {
@@ -189,5 +189,5 @@ if ($combine) {
 }
 
 $time_end = (Get-Date).Millisecond
-Write-Host "Parse job completed in $($time_end - $time_start) milliseconds."
+Write-Output "Parse job completed in $($time_end - $time_start) milliseconds."
 $combined_ach

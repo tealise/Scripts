@@ -31,7 +31,7 @@ $domain_canonical = "dc=example,dc=com"
 . .\fn-NewHire.ps1
 
 Clear-Host
-Write-Host @"
+Write-Output @"
 ############################################################
 #                        Main Menu                         #
 #                                                          #
@@ -51,7 +51,7 @@ Write-Host @"
 ############################################################
 "@
 
-Write-Host "Defaulting to menu option 1.`r`n"
+Write-Output "Defaulting to menu option 1.`r`n"
 
 Import-Module ActiveDirectory
 
@@ -96,7 +96,7 @@ $user_profile_data = @{
   'Enabled' = $true
 }
 
-Write-Host "Creating new AD account for $first_name $last_name with username $next_available_username"
+Write-Output "Creating new AD account for $first_name $last_name with username $next_available_username"
 New-ADUser @user_profile_data -Instance $template
 
 ### VERIFY UPLOAD TO AD ###
@@ -115,10 +115,10 @@ $template.memberOf | Add-ADGroupMember -Members $next_available_username
 if ($role.AdditionalGroups) {($role.AdditionalGroups).Split(',') | Add-ADGroupMember -Members $next_available_username }
 $newuser = Get-ADUser -Identity $next_available_username
 
-Write-Host "Creating UserDocs Folder"
+Write-Output "Creating UserDocs Folder"
 CreateUserDocs $userDocsPath $next_available_username
 
-Write-Host "Configuring Mailbox."
+Write-Output "Configuring Mailbox."
 $BulkParameters = `
 @{
     Domain = $domain_fqdn
@@ -128,6 +128,6 @@ $BulkParameters = `
 }
 ./Create-UserMailbox.ps1 -User $next_available_username -Alias $email_alias @BulkParameters
 
-Write-Host "Completed."
+Write-Output "Completed."
 . .\fn-NewHire.ps1
 ShowSummary

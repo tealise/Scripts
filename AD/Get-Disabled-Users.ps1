@@ -12,9 +12,9 @@
 
 # VERIFY AD MODULE DEPENDENCY IS INSTALLED
 if (!(Get-Module -ListAvailable -Name ActiveDirectory)) {
-    Write-Host "ERROR!!" -foregroundcolor "magenta"
-    Write-Host "Active Directory CMDLET Not Installed:"
-    Write-Host "Please install RSAT and enable Active Directory Powershell Module"
+    Write-Output "ERROR!!" -foregroundcolor "magenta"
+    Write-Output "Active Directory CMDLET Not Installed:"
+    Write-Output "Please install RSAT and enable Active Directory Powershell Module"
     exit 1
 } else {
     Import-Module ActiveDirectory
@@ -45,4 +45,4 @@ Select-Object @{Label = "Display Name";Expression = {$_.DisplayName}},
 
 Export-CSV $path\ADExport_Disabled_Users_$reportdate.csv -notypeinformation
 
-Write-Host Exported CSV available at $path\ADExport_Disabled_Users_$reportdate.csv
+Write-Output Exported CSV available at $path\ADExport_Disabled_Users_$reportdate.csv

@@ -22,9 +22,9 @@
 #>
 
 clear
-Write-Host "Bitlocker/TPM Key Retrieval Tool"
-write-Host "Joshua Nasiatka (Feb 2016)`n"
-Write-Host "loading application..."
+Write-Output "Bitlocker/TPM Key Retrieval Tool"
+Write-Output "Joshua Nasiatka (Feb 2016)`n"
+Write-Output "loading application..."
 
 function display ($title) {
 [void][System.Reflection.Assembly]::LoadWithPartialName( "System.Windows.Forms")

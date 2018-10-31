@@ -27,7 +27,7 @@ if (!(Test-Path -Path "$MyDir\Settings.xml")) {
     [string]$SharedMailboxOU      = Read-Host "Enter distinguished name for shared mailbox location (e.g. CN=Groups,DC=contoso,DC=local)"
     [string]$ExchangeSVR          = Read-Host "Enter hostname of exchange server (e.g. MSExch01)"
 
-    Write-Host "Generating XML File..."
+    Write-Output "Generating XML File..."
     [xml]$ConfigFile = (Get-Content ".\SettingsTemplate.xml")
     $ConfigFile.Settings.Domain.FQDN                = $DomainFQDN
     $ConfigFile.Settings.Domain.PreferredDC         = $DC
@@ -37,7 +37,7 @@ if (!(Test-Path -Path "$MyDir\Settings.xml")) {
     $ConfigFile.Settings.Exchange.SMTPPort          = "25"
     $ConfigFile.Save("$MyDir\Settings.xml")
 
-    Write-Host "File Created in '$MyDir'"
+    Write-Output "File Created in '$MyDir'"
     pause
   } else {
     Write-Warning "Need a settings.xml file in order to proceed`nQuitting..."
@@ -58,7 +58,7 @@ $ExchangeSVR          = $ConfigFile.Settings.Exchange.ServerName        # e.g. m
 Function ClearScreen { [System.Console]::Clear() }
 
 ClearScreen
-Write-Host "Waiting for credentials..."
+Write-Output "Waiting for credentials..."
 
 $titlemenu = @"
 ############################################################
@@ -95,7 +95,7 @@ if ($domain.name -eq $null) {
     Write-Warning "Authentication failed - please verify your username and password."
     exit
 } else {
-    Write-Host "Successfully authenticated with domain $domain.name"
+    Write-Output "Successfully authenticated with domain $domain.name"
 }
 
 $BulkParameters = `
@@ -123,7 +123,7 @@ Function ObtainMenuDecision() {
 }
 
 Function ProcessNewMailbox {
-  Write-Host "`nStarting new mailbox workflow..."
+  Write-Output "`nStarting new mailbox workflow..."
   $who = Read-Host "Enter w# or Display Name"
   $alias = Read-Host "Enter email alias"
   $shared = Read-Host "Shared Mailbox? OR User? [S/U]"
@@ -135,12 +135,12 @@ Function ProcessNewMailbox {
 }
 
 Function ProcessUnprovisionMailbox {
-  Write-Host "`nStarting unprovision mailbox workflow..."
+  Write-Output "`nStarting unprovision mailbox workflow..."
   ./Remove-UserMailbox.ps1 @BulkParameters
 }
 
 Function ProcessRemoveMailbox {
-  Write-Host "`nBeginning removal workflow for mailbox and user..."
+  Write-Output "`nBeginning removal workflow for mailbox and user..."
   $opt = Read-Host "Are you sure you want to delete a mailbox and user. This will destroy the record from Active Directory. [DELETE/NO]"
   if ($opt -eq "DELETE") {
     ClearScreen
@@ -151,15 +151,15 @@ Function ProcessRemoveMailbox {
 }
 
 Function ProcessMailboxACL {
-  Write-Host "`nBeginning mailbox ACL change workflow...`n"
+  Write-Output "`nBeginning mailbox ACL change workflow...`n"
   $dobulk = Read-Host "Will you be performing a bulk change? [Y/N]"
 
   if ($dobulk -eq "Y") {
-    Write-Host "Workflow changed to bulk transaction`n"
+    Write-Output "Workflow changed to bulk transaction`n"
     $filename = Read-Host "Enter filepath (e.g. C:\Temp\ExchangeThings.csv)"
     ./Set-MailboxPerms.ps1 -Bulk -Filepath $filename @BulkParameters
   } else {
-    Write-Host "Workflow changed to single user modification`n"
+    Write-Output "Workflow changed to single user modification`n"
     $user = Read-Host "Enter username of person being given access"
     $box = Read-Host "Enter mailbox alias (e.g. custsupport or j.doe)"
     ./Set-MailboxPerms.ps1 -User $user -MailboxAlias $box @BulkParameters
@@ -167,7 +167,7 @@ Function ProcessMailboxACL {
 }
 
 Function ProcessCreateDL {
-  Write-Host "`nBeginning new distribution list workflow...`n"
+  Write-Output "`nBeginning new distribution list workflow...`n"
   $DisplayName = Read-Host "Enter Display Name"
   $Alias = Read-Host "Enter alias, aka stuff before '@'"
   $HaveFile = Read-Host "Did you create a new CSV w/ UserID and DL columns? [Y/N]"
@@ -176,13 +176,13 @@ Function ProcessCreateDL {
     $UserListLocation = Read-Host "Enter filepath"
     ./Create-DistributionList.ps1 -DisplayName $DisplayName -Alias $Alias -UserList $UserListLocation -Domain $DomainFQDN -DomainController $DC -OU $DistributionGroupOU -ExchangeServer $ExchangeSVR -WinCredential $cred
   } else {
-    Write-Host "`nChanging workflow to 'create only'..."
+    Write-Output "`nChanging workflow to 'create only'..."
     ./Create-DistributionList.ps1 -DisplayName $DisplayName -Alias $Alias -Domain $DomainFQDN -DomainController $DC -OU $DistributionGroupOU -CreateOnly -ExchangeServer $ExchangeSVR -WinCredential $cred
   }
 }
 
 Function ProcessUpdateDL {
-  Write-Host "`nBegnning update distribution list workflow...`n"
+  Write-Output "`nBegnning update distribution list workflow...`n"
   $HaveFile = Read-Host "Did you create a new CSV w/ UserID and DL columns? [Y/N]"
 
   if ($HaveFile -eq "Y") {
@@ -193,4 +193,4 @@ Function ProcessUpdateDL {
   }
 }
 
-do { pause; ClearScreen; Write-Host $titlemenu; ObtainMenuDecision } while (1)
+do { pause; ClearScreen; Write-Output $titlemenu; ObtainMenuDecision } while (1)

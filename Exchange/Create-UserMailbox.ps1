@@ -82,7 +82,7 @@ process {
 			Write-Warning $NopeError
 			exit
 		} else {
-			Write-Host "Found a record for user '$User'"
+			Write-Output "Found a record for user '$User'"
 		}
 	}
 
@@ -101,7 +101,7 @@ process {
 		exit
 	}
 
-  Write-Host "Processing Exchange account for user, $User ($Alias)"
+  Write-Output "Processing Exchange account for user, $User ($Alias)"
 
 	$ExchangeCommands = Function ExchangeCommands($User,$Domain,$Alias,$RetPol,$ExchangeParams,$Shared,$OU) {
 		if ($Shared) {
@@ -126,7 +126,7 @@ process {
 	}
 
 	if (($Quota -eq "2GB") -Or ($Quota -eq "Unlimited")) {
-		Write-Host "Creating account and setting the mailbox size and retention policy"
+		Write-Output "Creating account and setting the mailbox size and retention policy"
 		if ($Shared) {
 			Invoke-Command -Session $Session -ScriptBlock ${function:ExchangeCommands} -ArgumentList $User,$Domain,$Alias,$RetPol,$ExchangeParams,$Shared,$OU
 
@@ -143,8 +143,5 @@ process {
 
 	# Close out the Exchange PSSession
 	Remove-PSSession $Session
-	Write-Host "Exited Exchange Session"
-	Write-Host "Completed Task"
-	Write-Host "======================================="
 
 }
